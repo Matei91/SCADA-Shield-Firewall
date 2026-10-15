@@ -1,0 +1,63 @@
+{
+  "system_name": "Gas Pipeline SCADA Monitoring & Control",
+  "registers": {
+    "1000": {
+      "name": "Line_Pressure_PSI",
+      "type": "INPUT_REGISTER",
+      "description": "Presiune masurata pe conducta principala de gaz (citire)",
+      "unit": "PSI",
+      "min_safe": 0.0,
+      "max_safe": 120.0
+    },
+    "1001": {
+      "name": "Gas_Flow_Rate",
+      "type": "INPUT_REGISTER",
+      "description": "Debit curent de gaz m3/h",
+      "unit": "m3/h",
+      "min_safe": 0.0,
+      "max_safe": 500.0
+    },
+    "1002": {
+      "name": "Compressor_Temperature",
+      "type": "INPUT_REGISTER",
+      "description": "Temperatura compresor principal de gaz",
+      "unit": "Celsius",
+      "min_safe": -20.0,
+      "max_safe": 110.0
+    },
+    "1010": {
+      "name": "Pressure_Setpoint",
+      "type": "HOLDING_REGISTER",
+      "description": "Setpoint presiune dorita in conducta (scriere permisa doar autorizat)",
+      "unit": "PSI",
+      "min_safe": 20.0,
+      "max_safe": 80.0
+    },
+    "1011": {
+      "name": "Pump_RPM_Setpoint",
+      "type": "HOLDING_REGISTER",
+      "description": "Viteza de rotatie a pompei de gaz",
+      "unit": "RPM",
+      "min_safe": 500.0,
+      "max_safe": 3000.0
+    },
+    "2001": {
+      "name": "Emergency_Shutoff_Valve",
+      "type": "COIL",
+      "description": "Valva de izolare automata in caz de urgenta (0 = Deschis, 1 = Izolat)",
+      "unit": "State",
+      "min_safe": 0,
+      "max_safe": 1,
+      "is_critical": true
+    },
+    "2002": {
+      "name": "Relief_Vent_Valve",
+      "type": "COIL",
+      "description": "Valva de suprapresiune ventilatie",
+      "unit": "State",
+      "min_safe": 0,
+      "max_safe": 1,
+      "is_critical": true
+    }
+  }
+}

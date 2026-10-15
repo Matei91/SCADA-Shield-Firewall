@@ -1,0 +1,71 @@
+{
+  "firewall_name": "SCADA-Shield ICS DPI Firewall",
+  "version": "1.0.0",
+  "default_policy": "DROP",
+  "read_only_mode": true,
+  "ai_inspection_enabled": true,
+  "ai_anomaly_threshold": 0.65,
+  "rules": [
+    {
+      "id": "R001_PROTO_SANITATION",
+      "description": "Valideaza integritatea protocolului Modbus TCP (Protocol ID = 0, Slave ID valid intre 1 si 247)",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "protocol_id_not_equal": 0,
+        "unit_id_out_of_range": [1, 247]
+      }
+    },
+    {
+      "id": "R002_IP_WHITELIST",
+      "description": "Permite accesul doar statiilor industriale autorizate (HMI, Engineering Station, Historian)",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "src_ip_not_in": [
+          "192.168.1.10",
+          "192.168.1.20",
+          "192.168.1.30"
+        ]
+      }
+    },
+    {
+      "id": "R003_READ_ONLY_ENFORCEMENT",
+      "description": "Blocheaza toate comenzile de scriere daca regimul Read-Only este activat",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "function_codes": [5, 6, 15, 16, 22, 23]
+      }
+    },
+    {
+      "id": "R004_CRITICAL_REGISTER_PROTECTION",
+      "description": "Protejeaza registrele critice de siguranta (valva oprire urgenta, setari de presiune critica)",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "register_range": [2000, 2010],
+        "function_codes": [5, 6, 15, 16]
+      }
+    },
+    {
+      "id": "R005_PHYSICAL_LIMITS_CHECK",
+      "description": "Inspecteaza semantic valorile scrise pentru a preveni sabotajul fizic (ex: supracomanda presiune)",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "enforce_industrial_limits": true
+      }
+    },
+    {
+      "id": "R006_RATE_LIMIT",
+      "description": "Prevenire atacuri Denial of Service (DoS / Flood) pe portul SCADA 502",
+      "enabled": true,
+      "action": "DROP",
+      "match": {
+        "max_packets_per_sec": 50.0,
+        "burst_allowance": 70
+      }
+    }
+  ]
+}
